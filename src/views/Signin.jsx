@@ -3,28 +3,26 @@ import BaseInput from "./components/BaseInput";
 import { Link } from "react-router-dom";
 
 
-function Signup() {
+function SignIn() {
 
-    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [errors, setErrors] = useState([])
     const [token, setToken] = useState('')
 
-    const createUser = () => {
+    const signInUser = () => {
         setErrors([])
         // Todo validationErrorも早期リターンする
-        if (!name || !password || !email) {
-            setErrors(["空文字で登録はできません"])
+        if (!password || !email) {
+            setErrors(["空文字でsignInできません"])
             return false
         }
 
-        const url = "https://api-for-missions-and-railways.herokuapp.com/users"
+        const url = "https://api-for-missions-and-railways.herokuapp.com/signin"
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                name,
                 email,
                 password
             })
@@ -35,32 +33,31 @@ function Signup() {
             .then((result) => {
                 // INFO 成功するとtokenが返ってくる
                 if (!result.token) {
-                    setErrors(["signUpに失敗しました。もう一度お試しください"])
+                    setErrors(["signInに失敗しました。もう一度お試しください"])
                 }
                 setToken(result.token)
-                setName('')
                 setEmail('')
                 setPassword('')
             })
             .catch(() => {
-                setErrors(["signUpに失敗しました。もう一度お試しください"])
+                setErrors(["signInに失敗しました。もう一度お試しください"])
             })
 
     }
 
     return (
         <div>
-            <h1>Sign up</h1>
+            <h1>Sign in</h1>
             <div>
-                <BaseInput label="name" type="text" value={name} onChange={setName}/>
                 <BaseInput label="email" type="email" value={email} onChange={setEmail}/>
                 <BaseInput label="password" type="password" value={password} onChange={setPassword}/>
                 <div>{errors}</div>
-                <input type="button" value="Signup" onClick={createUser}/>
+                <input type="button" value="SignIn" onClick={signInUser}/>
             </div>
-            <Link to="/login">ログインはこちら</Link>
+            {token}
+            <Link to="/signup">新規登録はこちら</Link>
         </div>
     )
 }
 
-export default Signup
+export default SignIn
