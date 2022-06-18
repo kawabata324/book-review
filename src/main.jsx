@@ -4,7 +4,7 @@ import App from './App'
 import './index.css'
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Signup from "./views/Signup";
-import Login from "./views/Login";
+import Login from "./views/Signin";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <BrowserRouter>
