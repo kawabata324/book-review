@@ -59,6 +59,7 @@ function SignIn() {
                         type="password"
                         register={register}
                         errors={errors.password}
+                        minLength={6}
                         required
                     />
                     <input type="submit" value="SignIn"/>
