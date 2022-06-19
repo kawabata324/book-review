@@ -1,15 +1,18 @@
-import {useState} from 'react'
+import "../../App.css"
 
 function BaseInput(props) {
-    const {label, type, value, onChange, required} = props
+    const {label, type, register, required, errors} = props
 
-    const handleChange = (e) => {
-        onChange(e.target.value)
-    }
     return (
         <div>
             <label>{label}</label>
-            <input type={type} value={value} onChange={handleChange}/>
+            <input
+                type={type}
+                {...register(label, {required})}
+            />
+            <div className="error-text">
+                {errors?.type === "required" && `${label}を入力してください`}
+            </div>
         </div>
     )
 }
