@@ -4,12 +4,12 @@ import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import "../App.css"
 
-function SignIn() {
+function SignIn(props) {
     const {register, formState: {errors}, handleSubmit} = useForm();
 
+    const {setToken} = props
     // このコンポーネントで管理しているstate
     const [serverError, setServerError] = useState('')
-    const [token, setToken] = useState('')
 
     const signInUser = (data) => {
         setServerError('')

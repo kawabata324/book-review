@@ -5,11 +5,11 @@ import {useForm} from "react-hook-form";
 import "../App.css"
 
 
-function Signup() {
+function Signup(props) {
     const {register, formState: {errors}, handleSubmit} = useForm();
-
+    const {setToken} = props
+    // このコンポーネントで管理しているstate
     const [serverError, setServerError] = useState('')
-    const [token, setToken] = useState('')
 
     const createUser = (data) => {
         const name = data.name
