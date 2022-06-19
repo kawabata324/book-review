@@ -1,23 +1,20 @@
 import {useState} from 'react'
 import BaseInput from "./components/BaseInput";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
+import {useForm} from "react-hook-form";
+import "../App.css"
 
 
 function Signup() {
+    const {register, formState: {errors}, handleSubmit} = useForm();
 
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [errors, setErrors] = useState([])
+    const [serverError, setServerError] = useState('')
     const [token, setToken] = useState('')
 
-    const createUser = () => {
-        setErrors([])
-        // Todo validationErrorも早期リターンする
-        if (!name || !password || !email) {
-            setErrors(["空文字で登録はできません"])
-            return false
-        }
+    const createUser = (data) => {
+        const name = data.name
+        const email = data.email
+        const password = data.password
 
         const url = "https://api-for-missions-and-railways.herokuapp.com/users"
         const requestOptions = {
@@ -35,15 +32,12 @@ function Signup() {
             .then((result) => {
                 // INFO 成功するとtokenが返ってくる
                 if (!result.token) {
-                    setErrors(["signUpに失敗しました。もう一度お試しください"])
+                    setServerError('サーバー側で問題が発生しました。もう一度お試しください。')
                 }
                 setToken(result.token)
-                setName('')
-                setEmail('')
-                setPassword('')
             })
             .catch(() => {
-                setErrors(["signUpに失敗しました。もう一度お試しください"])
+                setServerError('サーバー側で問題が発生しました。もう一度お試しください。')
             })
 
     }
@@ -51,12 +45,33 @@ function Signup() {
     return (
         <div>
             <h1>Sign up</h1>
+            <div className="error-text">{serverError}</div>
             <div>
-                <BaseInput label="name" type="text" value={name} onChange={setName}/>
-                <BaseInput label="email" type="email" value={email} onChange={setEmail}/>
-                <BaseInput label="password" type="password" value={password} onChange={setPassword}/>
-                <div>{errors}</div>
-                <input type="button" value="Signup" onClick={createUser}/>
+                <form onSubmit={handleSubmit(createUser)}>
+                    <BaseInput
+                        label="name"
+                        type="text"
+                        register={register}
+                        required
+                        errors={errors.name}
+                    />
+                    <BaseInput
+                        label="email"
+                        type="email"
+                        register={register}
+                        required
+                        errors={errors.email}
+                    />
+                    <BaseInput
+                        label="password"
+                        type="password"
+                        register={register}
+                        required
+                        errors={errors.password}
+                    />
+                    <input type="submit" value="Signup"/>
+                </form>
+
             </div>
             <Link to="/login">ログインはこちら</Link>
         </div>
