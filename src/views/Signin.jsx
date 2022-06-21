@@ -3,20 +3,22 @@ import BaseInput from "./components/BaseInput";
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import "../App.css"
+import {useNavigate} from "react-router-dom";
 
 function SignIn(props) {
     const {register, formState: {errors}, handleSubmit} = useForm();
+    let navigate = useNavigate();
 
-    const {setToken} = props
+    const {updateToken} = props
     // このコンポーネントで管理しているstate
     const [serverError, setServerError] = useState('')
 
-    const signInUser = (data) => {
+    const signInUser = async (data) => {
         setServerError('')
         const email = data.email
         const password = data.password
 
-        const url = "https://api-for-missions-and-railways.herokuapp.com/signin"
+        const url = "http://api-for-missions-and-railways.herokuapp.com/signin"
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -26,19 +28,22 @@ function SignIn(props) {
             })
         }
 
-        fetch(url, requestOptions)
-            .then((res) => res.json())
-            .then((result) => {
-                // INFO 成功するとtokenが返ってくる
-                if (!result.token) {
-                    setServerError('サーバー側で問題が発生しました。もう一度お試しください。')
-                }
-                setToken(result.token)
-            })
-            .catch((e) => {
-                setServerError('サーバー側で問題が発生しました。もう一度お試しください。')
-            })
-
+        try {
+            fetch(url, requestOptions)
+                .then((res) => res.json())
+                .then((result) => {
+                    // INFO 成功するとtokenが返ってくる
+                    if (result.token) {
+                        updateToken(result.token)
+                        console.log(result.code)
+                        navigate('/')
+                    } else if (result.ErrorCode) {
+                        setServerError(result.ErrorMessageJP)
+                    }
+                })
+        } catch (e) {
+            setServerError('サーバー側で問題が発生しました。もう一度お試しください。')
+        }
     }
 
     return (

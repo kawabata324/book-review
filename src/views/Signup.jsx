@@ -2,12 +2,15 @@ import {useState} from 'react'
 import BaseInput from "./components/BaseInput";
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import "../App.css"
 
 
 function Signup(props) {
     const {register, formState: {errors}, handleSubmit} = useForm();
-    const {setToken} = props
+    let navigate = useNavigate();
+
+    const {updateToken} = props
     // このコンポーネントで管理しているstate
     const [serverError, setServerError] = useState('')
 
@@ -16,7 +19,7 @@ function Signup(props) {
         const email = data.email
         const password = data.password
 
-        const url = "https://api-for-missions-and-railways.herokuapp.com/users"
+        const url = "http://api-for-missions-and-railways.herokuapp.com/users"
         const requestOptions = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -34,7 +37,9 @@ function Signup(props) {
                 if (!result.token) {
                     setServerError('サーバー側で問題が発生しました。もう一度お試しください。')
                 }
-                setToken(result.token)
+                updateToken(result.token)
+                navigate('/')
+
             })
             .catch(() => {
                 setServerError('サーバー側で問題が発生しました。もう一度お試しください。')
