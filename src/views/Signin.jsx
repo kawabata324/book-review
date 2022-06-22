@@ -4,12 +4,17 @@ import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import "../App.css"
 import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {setToken} from "../redux/slice/auth";
+import {setUser} from "../redux/slice/user";
+import {login} from "../hooks/login";
+import {getUser} from "../hooks/getUser";
 
-function SignIn(props) {
+function SignIn() {
     const {register, formState: {errors}, handleSubmit} = useForm();
     let navigate = useNavigate();
+    const dispatch = useDispatch();
 
-    const {updateToken} = props
     // このコンポーネントで管理しているstate
     const [serverError, setServerError] = useState('')
 
@@ -18,33 +23,18 @@ function SignIn(props) {
         const email = data.email
         const password = data.password
 
-        const url = "http://api-for-missions-and-railways.herokuapp.com/signin"
-        const requestOptions = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                email,
-                password
-            })
-        }
+        const {res} = await login(email, password)
+        if (res !== null) {
+            await dispatch(setToken(res.data.token))
 
-        try {
-            fetch(url, requestOptions)
-                .then((res) => res.json())
-                .then((result) => {
-                    // INFO 成功するとtokenが返ってくる
-                    if (result.token) {
-                        updateToken(result.token)
-                        console.log(result.code)
-                        navigate('/')
-                    } else if (result.ErrorCode) {
-                        setServerError(result.ErrorMessageJP)
-                    }
-                })
-        } catch (e) {
-            setServerError('サーバー側で問題が発生しました。もう一度お試しください。')
+            const {resUser} = await getUser(res.data.token)
+            await dispatch(setUser(resUser.data.name))
+            navigate('/')
+        } else {
+            setServerError('サーバーでErrorが発生しました。もう一度お試しください')
         }
     }
+
 
     return (
         <div>

@@ -2,9 +2,10 @@ import {getBooks} from "../hooks/getBooks";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import "../App.css"
+import {useSelector} from "react-redux";
 
-const Home = (props) => {
-    const {token} = props
+const Home = () => {
+    const token = useSelector((state) => state.auth.token)
     const [books, setBooks] = useState([])
 
     let navigate = useNavigate();
