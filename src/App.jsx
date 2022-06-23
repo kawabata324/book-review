@@ -3,18 +3,17 @@ import Signup from "./views/Signup";
 import Login from "./views/Signin";
 import {useState} from "react";
 import Home from "./views/Home";
+import Header from "./views/Header";
 
 function App() {
-    const [token, setToken] = useState('')
-
-    const updateToken = (token) => setToken(token)
     return (
         <div>
             <BrowserRouter>
+                <Header/>
                 <Routes>
-                    <Route path="/" element={<Home token={token}/>}/>
-                    <Route path="/signup" element={<Signup updateToken={updateToken} token={token}/>}/>
-                    <Route path="/login" element={<Login updateToken={updateToken}/>}/>
+                    <Route path="/" element={<Home/>}/>
+                    <Route path="/signup" element={<Signup/>}/>
+                    <Route path="/login" element={<Login/>}/>
                 </Routes>
             </BrowserRouter>
         </div>
