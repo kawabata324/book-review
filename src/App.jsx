@@ -8,8 +8,8 @@ import Header from "./views/Header";
 function App() {
     return (
         <div>
-            <Header/>
             <BrowserRouter>
+                <Header/>
                 <Routes>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/signup" element={<Signup/>}/>

@@ -1,10 +1,10 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import BaseInput from "./components/BaseInput";
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import "../App.css"
 import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setToken} from "../redux/slice/auth";
 import {setUser} from "../redux/slice/user";
 import {login} from "../hooks/login";
@@ -13,7 +13,9 @@ import {getUser} from "../hooks/getUser";
 function SignIn() {
     const {register, formState: {errors}, handleSubmit} = useForm();
     let navigate = useNavigate();
+    //Storeで管理している値
     const dispatch = useDispatch();
+    const name = useSelector((state) => state.user_n.name)
 
     // このコンポーネントで管理しているstate
     const [serverError, setServerError] = useState('')
@@ -34,6 +36,12 @@ function SignIn() {
             setServerError('サーバーでErrorが発生しました。もう一度お試しください')
         }
     }
+
+    useEffect(() => {
+        if(!!name){
+            navigate('/')
+        }
+    }, [])
 
 
     return (

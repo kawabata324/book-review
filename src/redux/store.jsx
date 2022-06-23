@@ -6,7 +6,7 @@ import userReducer from "./slice/user"
 export const store = configureStore({
     reducer: {
         auth: authReducer,
-        user: userReducer
+        user_n: userReducer,
     },
 
     preloadedState: load(),
