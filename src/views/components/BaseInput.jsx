@@ -1,7 +1,7 @@
 import "../../App.css"
 
 function BaseInput(props) {
-    const {label, type, register, required, errors, minLength} = props
+    const {label, type, register, required, errors, minLength, placeholder} = props
 
     return (
         <div>
@@ -9,6 +9,7 @@ function BaseInput(props) {
             <input
                 type={type}
                 {...register(label, {required, minLength})}
+                placeholder={placeholder}
             />
             <div className="error-text">
                 {errors?.type === "required" && `${label}を入力してください`}

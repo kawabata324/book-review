@@ -10,9 +10,12 @@ const Header = () => {
 
 
     const loginStatus = () => {
-    if (!!name) {
+        if (!!name) {
             return (
-                <div>{name}</div>
+                <div>
+                    <p>{name}</p>
+                    <button onClick={() => navigate('/profile')}>編集</button>
+                </div>
             )
         } else {
             return (
@@ -26,10 +29,13 @@ const Header = () => {
         dispatch(deleteUser())
     }
     return (
-        <div className="flex">
-            <img className="logo" src={Image}></img>
-            <button onClick={logOut}>Logout</button>
-            <div>{loginStatus()}</div>
+        <div>
+            <div className="flex">
+                <img className="logo" src={Image}></img>
+                <button onClick={logOut}>Logout</button>
+                <div>{loginStatus()}</div>
+            </div>
+            <hr/>
         </div>
     )
 }

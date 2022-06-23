@@ -5,7 +5,6 @@ import "../App.css"
 import {useSelector} from "react-redux";
 
 const Home = () => {
-    const token = useSelector((state) => state.auth.token)
     const [books, setBooks] = useState([])
 
     let navigate = useNavigate();
