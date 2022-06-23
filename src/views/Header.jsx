@@ -2,6 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Image from "../logo.svg"
 import {useNavigate} from "react-router-dom";
 import {deleteUser} from "../redux/slice/user";
+import {deleteToken} from "../redux/slice/auth";
 
 const Header = () => {
     const name = useSelector((state) => state.user_n.name)
@@ -25,8 +26,10 @@ const Header = () => {
         }
     }
 
-    const logOut = () => {
-        dispatch(deleteUser())
+    const logOut = async () => {
+        await dispatch(deleteUser())
+        await dispatch(deleteToken())
+        navigate('/login')
     }
     return (
         <div>
