@@ -6,7 +6,7 @@ import {useSelector} from "react-redux";
 
 const Home = () => {
     const [books, setBooks] = useState([])
-
+    const token = useSelector((state) => state.auth.token)
     let navigate = useNavigate();
 
     const fetchBooks = async () => {
@@ -51,6 +51,7 @@ const Home = () => {
                 {bookList}
                 </tbody>
             </table>
+            <button onClick={() => navigate('/new')}>reviewを登録する</button>
         </div>
     )
 }
