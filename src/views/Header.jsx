@@ -2,6 +2,7 @@ import {useDispatch, useSelector} from "react-redux";
 import Image from "../logo.svg"
 import {useNavigate} from "react-router-dom";
 import {deleteUser} from "../redux/slice/user";
+import {deleteToken} from "../redux/slice/auth";
 
 const Header = () => {
     const name = useSelector((state) => state.user_n.name)
@@ -10,9 +11,12 @@ const Header = () => {
 
 
     const loginStatus = () => {
-    if (!!name) {
+        if (!!name) {
             return (
-                <div>{name}</div>
+                <div>
+                    <p>{name}</p>
+                    <button onClick={() => navigate('/profile')}>編集</button>
+                </div>
             )
         } else {
             return (
@@ -22,14 +26,19 @@ const Header = () => {
         }
     }
 
-    const logOut = () => {
-        dispatch(deleteUser())
+    const logOut = async () => {
+        await dispatch(deleteUser())
+        await dispatch(deleteToken())
+        navigate('/login')
     }
     return (
-        <div className="flex">
-            <img className="logo" src={Image}></img>
-            <button onClick={logOut}>Logout</button>
-            <div>{loginStatus()}</div>
+        <div>
+            <div className="flex">
+                <img className="logo" src={Image}></img>
+                <button onClick={logOut}>Logout</button>
+                <div>{loginStatus()}</div>
+            </div>
+            <hr/>
         </div>
     )
 }
