@@ -5,6 +5,7 @@ import Home from "./views/Home";
 import Header from "./views/Header";
 import Profile from "./views/Profile";
 import BookRegister from "./views/BookRegister";
+import BookDetail from "./views/BookDetail";
 
 function App() {
     return (
@@ -17,6 +18,7 @@ function App() {
                     <Route path="/login" element={<Login/>}/>
                     <Route path="/profile" element={<Profile/>}/>
                     <Route path="/new" element={<BookRegister/>}/>
+                    <Route path="/detail/:id" element={<BookDetail/>}/>
                 </Routes>
             </BrowserRouter>
         </div>

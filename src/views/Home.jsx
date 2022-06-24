@@ -22,8 +22,7 @@ const Home = () => {
     const bookList = books.map((book) => {
         return (
             <tr key={book.id}>
-                <td>{book.id}</td>
-                <td>{book.title}</td>
+                <td><a onClick={() => navigate(`/detail/${book.id}`)}>{book.title}</a></td>
                 <td>{book.detail}</td>
                 <td>{book.review}</td>
                 <td>{book.reviewer}</td>
@@ -40,7 +39,6 @@ const Home = () => {
             <table className="table">
                 <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Title</th>
                     <th>Detail</th>
                     <th>Review</th>
