@@ -1,59 +1,34 @@
-import BaseInput from "./components/BaseInput";
 import {useForm} from "react-hook-form";
-import {postBook} from "../hooks/postBooks";
+import {postBook} from "../hooks/postBook";
 import {useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import BaseBookForm from "./components/BaseBookForm";
 
 const BookRegister = () => {
-
     const {register, formState: {errors}, handleSubmit} = useForm();
+
+    // store
     const token = useSelector((state) => state.auth.token)
     let navigate = useNavigate();
 
     const registerBook = async (data) => {
-        const title = data.title
-        const url = data.url
-        const detail = data.detail
-        const review = data.review
+        const {res} = await postBook(token, data.title, data.url, data.detail, data.review)
 
-        const {res} = await postBook(token, title, url, detail, review)
-
-        if(res.status === 200){
+        if (res.status === 200) {
             navigate("/")
         }
     }
 
     return (
         <div>
-            <form onSubmit={handleSubmit(registerBook)}>
-                <BaseInput
-                    label="title"
-                    type="text"
-                    register={register}
-                    errors={errors.title}
-                    required
-                />
-                <BaseInput
-                    label="url"
-                    type="text"
-                    register={register}
-                    errors={errors.url}
-                    required
-                />
-                <div>
-                    <label>detail</label>
-                    <textarea
-                        {...register("detail", {required: true})}
-                    ></textarea>
-                </div>
-                <div>
-                    <label>review</label>
-                    <textarea
-                        {...register("review", {required: true})}
-                    ></textarea>
-                </div>
-                <input type="submit" value="登録"/>
-            </form>
+            <BaseBookForm
+                formTitle="登録"
+                errors={errors}
+                handleSubmit={handleSubmit}
+                submitFunc={registerBook}
+                register={register}
+                submitValue="登録"
+            />
         </div>
     )
 }

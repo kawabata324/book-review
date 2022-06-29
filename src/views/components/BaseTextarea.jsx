@@ -1,16 +1,14 @@
-function BaseInput(props) {
-    const {label, type, register, required, errors, minLength, placeholder, defaultValue} = props
+function BaseTextarea(props) {
+    const {label, register, required, errors, minLength, placeholder, defaultValue} = props
 
     return (
         <div>
             <label className="label text-xl">{label}</label>
-            <input
-                className="input input-bordered input-info w-96"
-                type={type}
-                {...register(label, {required, minLength})}
+            <textarea
+                className="textarea textarea-info h-96 w-96 "
+                {...register(label, {required})}
                 defaultValue={defaultValue}
-                placeholder={placeholder}
-            />
+            ></textarea>
             <div className="text-red-500">
                 {errors?.type === "required" && `${label}を入力してください`}
                 {errors?.type === "minLength" && `${label}が短すぎます。${minLength}文字以上にしてください`}
@@ -19,4 +17,4 @@ function BaseInput(props) {
     )
 }
 
-export default BaseInput
+export default BaseTextarea

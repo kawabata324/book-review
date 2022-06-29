@@ -9,7 +9,7 @@ const Loading = ({children}) => {
 
     if (isLoading) {
         return (
-            <section>
+            <section className="flex justify-center items-center mt-56">
                 <div>
                     <ReactLoading
                         type="spin"

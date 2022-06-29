@@ -1,24 +1,23 @@
-import BaseInput from "./components/BaseInput";
 import {useForm} from "react-hook-form";
-import {postBook} from "../hooks/postBooks";
-import {useDispatch, useSelector} from "react-redux";
+import {useSelector} from "react-redux";
 import {useNavigate, useParams} from "react-router-dom";
-import {useCallback, useEffect, useMemo, useState} from "react";
-import {setLoading} from "../redux/slice/loading";
+import {useEffect, useState} from "react";
 import {getBookDetail} from "../hooks/getBookDetail";
 import {updateBook} from "../hooks/updateBook";
 import {deleteBook} from "../hooks/deleteBook";
+import BaseBookForm from "./components/BaseBookForm";
 
 const BookEdit = () => {
-    const params = useParams()
+    // このコンポーネントで管理するもの
     const [book, setBook] = useState({})
-
     const {register, formState: {errors}, handleSubmit} = useForm();
-    const token = useSelector((state) => state.auth.token)
+
+    // urlに含まれているparam, navigate
+    const params = useParams()
     let navigate = useNavigate();
 
-
-    const dispatch = useDispatch()
+    // store
+    const token = useSelector((state) => state.auth.token)
 
 
     const editBook = async (data) => {
@@ -36,18 +35,23 @@ const BookEdit = () => {
     }
 
     useEffect(() => {
+
         const fetchBook = async () => {
+
             const {res} = await getBookDetail(token, params.id)
+            // 自分のreviewでなかったら早期リターンする
             if (!res.data.isMine) await navigate('/')
-            await setBook({
-                id: res.data.id,
-                isMine: res.data.isMine,
-                review: res.data.review,
-                reviewer: res.data.reviewer,
-                title: res.data.title,
-                url: res.data.url,
-                detail: res.data.detail
-            })
+            if (res.status === 200) {
+                await setBook({
+                    id: res.data.id,
+                    isMine: res.data.isMine,
+                    review: res.data.review,
+                    reviewer: res.data.reviewer,
+                    title: res.data.title,
+                    url: res.data.url,
+                    detail: res.data.detail
+                })
+            }
         }
         fetchBook()
 
@@ -55,40 +59,17 @@ const BookEdit = () => {
 
     return (
         <div>
-            <form onSubmit={handleSubmit(editBook)}>
-                <BaseInput
-                    label="title"
-                    type="text"
-                    register={register}
-                    errors={errors.title}
-                    defaultValue={book.title}
-                    required
-                />
-                <BaseInput
-                    label="url"
-                    type="text"
-                    register={register}
-                    errors={errors.url}
-                    defaultValue={book.url}
-                    required
-                />
-                <div>
-                    <label>detail</label>
-                    <textarea
-                        {...register("detail", {required: true})}
-                        defaultValue={book.detail}
-                    ></textarea>
-                </div>
-                <div>
-                    <label>review</label>
-                    <textarea
-                        {...register("review", {required: true})}
-                        defaultValue={book.review}
-                    ></textarea>
-                </div>
-                <input type="submit" value="更新"/>
-            </form>
-            <button onClick={() => clickDeleteBook()}>削除</button>
+            <BaseBookForm
+                formTitle="編集"
+                book={book}
+                errors={errors}
+                handleSubmit={handleSubmit}
+                submitFunc={editBook}
+                register={register}
+                deleteFunc={clickDeleteBook}
+                deleteBtn
+                submitValue="編集"
+            />
         </div>
     )
 }

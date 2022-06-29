@@ -2,7 +2,6 @@ import {useEffect, useState} from 'react'
 import BaseInput from "./components/BaseInput";
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
-import "../App.css"
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {setToken} from "../redux/slice/auth";
@@ -22,11 +21,9 @@ function SignIn() {
 
     const signInUser = async (data) => {
         setServerError('')
-        const email = data.email
-        const password = data.password
 
-        const {res} = await login(email, password)
-        if (res !== null) {
+        const {res} = await login(data.email, data.password)
+        if (res.status === 200) {
             await dispatch(setToken(res.data.token))
 
             const {resUser} = await getUser(res.data.token)

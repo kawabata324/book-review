@@ -5,7 +5,7 @@ export const loadingSlice = createSlice({
     name: 'loading',
     initialState: {
         isLoading: false,
-        loadingText: "処理中"
+        loadingText: ""
     },
     reducers: {
         setLoading: (state, action) => {

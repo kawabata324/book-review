@@ -1,47 +1,47 @@
 import BaseInput from "./components/BaseInput";
 import {useForm} from "react-hook-form";
-import "../App.css"
 import {useDispatch, useSelector} from "react-redux";
 import {postUser} from "../hooks/postUser";
 import {setUser} from "../redux/slice/user";
-import {useMemo} from "react";
+import {setLoading} from "../redux/slice/loading";
+import Loading from "./components/Loading";
 
 const Profile = () => {
+    //store
     const name = useSelector((state) => state.user_n.name)
     const token = useSelector((state) => state.auth.token)
-
-    const defaultValues = useMemo(() => {
-        return {
-            new_name: name
-        }
-    }, [name])
-    const {register, formState: {errors}, handleSubmit} = useForm({defaultValues});
-
-
     const dispatch = useDispatch()
-    const updateUserName = async (data) => {
 
-        const new_name = data.new_name
-        const {res} = await postUser(token, new_name)
-        dispatch(setUser(res.data.name))
+    const {register, formState: {errors}, handleSubmit} = useForm();
+
+    const updateUserName = async (data) => {
+        dispatch(setLoading(true))
+        const {res} = await postUser(token, data.name)
+        if (res.status === 200) {
+            dispatch(setUser(res.data.name))
+        }
+        dispatch(setLoading(false))
     }
 
     return (
-        <div className="flex">
-            <form onSubmit={handleSubmit(updateUserName)}>
-                <BaseInput
-                    label="new_name"
-                    type="text"
-                    register={register}
-                    required
-                    errors={errors.name}
-                    placeholder={name}
-                />
-                <div>
-                    <input type="submit" value="Update"/>
-                </div>
-            </form>
-        </div>
+        <Loading>
+            <div className="mt-10">
+                <h1 className="text-4xl text-center">Profile</h1>
+                <form className="flex gap-10 items-end justify-center" onSubmit={handleSubmit(updateUserName)}>
+                    <BaseInput
+                        label="name"
+                        type="text"
+                        register={register}
+                        required
+                        errors={errors.name}
+                        defaultValue={name}
+                    />
+                    <div className="btn btn-primary">
+                        <input type="submit" value="変更"/>
+                    </div>
+                </form>
+            </div>
+        </Loading>
     )
 }
 

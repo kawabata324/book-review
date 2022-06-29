@@ -1,14 +1,16 @@
 import {apiClient} from "../lib/apiClient";
 
 
-export const getBooks = async (token) => {
+export const getBooks = async (token, page) => {
+    const offset = page === 1 ? page : page * 10
+
     try {
         const res = await apiClient.get("/books", {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
             params: {
-                offset: 1
+                offset
             },
         });
         return {res, error: null}
