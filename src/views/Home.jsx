@@ -26,6 +26,9 @@ const Home = () => {
                 <td>{book.detail}</td>
                 <td>{book.review}</td>
                 <td>{book.reviewer}</td>
+                <td>
+                    <button onClick={() => navigate(`/edit/${book.id}`)}>edit</button>
+                </td>
             </tr>
         )
     })
