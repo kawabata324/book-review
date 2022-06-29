@@ -6,6 +6,7 @@ import Header from "./views/Header";
 import Profile from "./views/Profile";
 import BookRegister from "./views/BookRegister";
 import BookDetail from "./views/BookDetail";
+import BookEdit from "./views/BookEdit";
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                     <Route path="/profile" element={<Profile/>}/>
                     <Route path="/new" element={<BookRegister/>}/>
                     <Route path="/detail/:id" element={<BookDetail/>}/>
+                    <Route path="/edit/:id" element={<BookEdit/>}/>
                 </Routes>
             </BrowserRouter>
         </div>
