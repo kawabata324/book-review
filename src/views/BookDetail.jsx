@@ -33,9 +33,9 @@ const BookDetail = () => {
     }, [])
 
     return (
-        <div>
+        <div className="overflow-x-auto">
             <Loading>
-                <table className="table">
+                <table className="table w-full">
                     <thead>
                     <tr>
                         <th>Title</th>

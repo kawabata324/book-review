@@ -1,58 +1,109 @@
 import {getBooks} from "../hooks/getBooks";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {setLoading} from "../redux/slice/loading";
+import Loading from "./components/Loading";
 import "../App.css"
-import {useSelector} from "react-redux";
+import {isLogin} from "../redux/slice/user";
 
 const Home = () => {
+    // このコンポーネントで管理する値
     const [books, setBooks] = useState([])
+    const [page, setPage] = useState(1)
+
+    // store
+    // Todo tokenの呼び出しをいちいちするのを防ぐ
     const token = useSelector((state) => state.auth.token)
+    const dispatch = useDispatch()
+
     let navigate = useNavigate();
 
-    const fetchBooks = async () => {
-        const {res, error} = await getBooks(token)
-        if (res) {
+    const fetchBooks = async (currentPage) => {
+        dispatch(setLoading(true))
+
+        const {res} = await getBooks(token, currentPage)
+        if (res.status === 200) {
             setBooks(res.data)
+        }
+        dispatch(setLoading(false))
+    }
+
+    const formatLongString = (string) => {
+        if (string.length >= 8) {
+            return string.slice(0, 8) + '...'
         } else {
-            console.log(error)
-            navigate('/login')
+            return string
         }
     }
 
+    const prevPage = async () => {
+        await fetchBooks(page - 1)
+        await setPage(page - 1)
+    }
+
+    const nextPage = async () => {
+        await fetchBooks(page + 1)
+        await setPage(page + 1)
+    }
+
+
     const bookList = books.map((book) => {
+        // Editに遷移するボタン
+        const editButton = (
+            <td>
+                <button className="btn-link text-red-400" onClick={() => navigate(`/edit/${book.id}`)}>edit
+                </button>
+            </td>
+        )
+
         return (
             <tr key={book.id}>
-                <td><a onClick={() => navigate(`/detail/${book.id}`)}>{book.title}</a></td>
-                <td>{book.detail}</td>
-                <td>{book.review}</td>
-                <td>{book.reviewer}</td>
-                <td>
-                    <button onClick={() => navigate(`/edit/${book.id}`)}>edit</button>
+                <td className="btn-link text-blue-400">
+                    <a onClick={() => navigate(`/detail/${book.id}`)}>{formatLongString(book.title)}</a>
                 </td>
+                <td>{formatLongString(book.review)}</td>
+                <td>{formatLongString(book.reviewer)}</td>
+                {book.isMine ? editButton : ''}
             </tr>
         )
     })
 
     useEffect(() => {
-        fetchBooks()
+        if (token === "") {
+            navigate('/login')
+        }
+        fetchBooks(page)
     }, [])
 
     return (
-        <div>
-            <table className="table">
-                <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Detail</th>
-                    <th>Review</th>
-                    <th>Reviewer</th>
-                </tr>
-                </thead>
-                <tbody>
-                {bookList}
-                </tbody>
-            </table>
-            <button onClick={() => navigate('/new')}>reviewを登録する</button>
+        <div className="overflow-x-auto">
+            <Loading>
+                <div className="flex flex-col items-center gap-3">
+                    <table className="table w-full mt-10">
+                        <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Review</th>
+                            <th>Reviewer</th>
+                            <th>Edit</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {bookList}
+                        </tbody>
+                    </table>
+                    <div className="btn-group">
+                        {page !== 1 ? <button className="btn" onClick={() => prevPage()}>«</button> :
+                            <button className="btn btn-disabled">«</button>}
+                        <button className="btn">Page {page}</button>
+                        <button className="btn" onClick={() => nextPage()}>»</button>
+                    </div>
+                </div>
+                <div className="mt-10 flex justify-end">
+                    <button className="btn btn-primary m-5" onClick={() => navigate('/new')}>新規登録する</button>
+                </div>
+            </Loading>
         </div>
     )
 }
