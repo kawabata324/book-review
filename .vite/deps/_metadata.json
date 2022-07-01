@@ -1,0 +1,80 @@
+{
+  "hash": "75c2128a",
+  "browserHash": "572875d2",
+  "optimized": {
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "19cd0252",
+      "needsInterop": true
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "645f56fe",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "8784c48a",
+      "needsInterop": true
+    },
+    "react-redux": {
+      "src": "../../node_modules/react-redux/es/index.js",
+      "file": "react-redux.js",
+      "fileHash": "bc0f5224",
+      "needsInterop": false
+    },
+    "@reduxjs/toolkit": {
+      "src": "../../node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js",
+      "file": "@reduxjs_toolkit.js",
+      "fileHash": "8a2e7e5e",
+      "needsInterop": false
+    },
+    "redux-localstorage-simple": {
+      "src": "../../node_modules/redux-localstorage-simple/dist/index.js",
+      "file": "redux-localstorage-simple.js",
+      "fileHash": "5d267fed",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "6fd67356",
+      "needsInterop": false
+    },
+    "react-hook-form": {
+      "src": "../../node_modules/react-hook-form/dist/index.esm.mjs",
+      "file": "react-hook-form.js",
+      "fileHash": "ac2453f2",
+      "needsInterop": false
+    },
+    "axios": {
+      "src": "../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "f0b729b5",
+      "needsInterop": true
+    },
+    "react-loading": {
+      "src": "../../node_modules/react-loading/dist/react-loading.js",
+      "file": "react-loading.js",
+      "fileHash": "69b6220b",
+      "needsInterop": true
+    }
+  },
+  "chunks": {
+    "chunk-PLCB5A2Z": {
+      "file": "chunk-PLCB5A2Z.js"
+    },
+    "chunk-VXPRUNNG": {
+      "file": "chunk-VXPRUNNG.js"
+    },
+    "chunk-GRNKZMUI": {
+      "file": "chunk-GRNKZMUI.js"
+    },
+    "chunk-WWO6H54A": {
+      "file": "chunk-WWO6H54A.js"
+    }
+  }
+}
