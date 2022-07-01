@@ -5,6 +5,7 @@ import {postUser} from "../hooks/postUser";
 import {setUser} from "../redux/slice/user";
 import {setLoading} from "../redux/slice/loading";
 import Loading from "./components/Loading";
+import {useEffect} from "react";
 
 const Profile = () => {
     //store
@@ -12,7 +13,7 @@ const Profile = () => {
     const token = useSelector((state) => state.auth.token)
     const dispatch = useDispatch()
 
-    const {register, formState: {errors}, handleSubmit} = useForm();
+    const {register, formState: {errors}, handleSubmit, setValue} = useForm();
 
     const updateUserName = async (data) => {
         dispatch(setLoading(true))
@@ -22,6 +23,11 @@ const Profile = () => {
         }
         dispatch(setLoading(false))
     }
+
+    useEffect(() => {
+        setValue('name', name)
+    }, [])
+
 
     return (
         <Loading>
@@ -34,7 +40,6 @@ const Profile = () => {
                         register={register}
                         required
                         errors={errors.name}
-                        defaultValue={name}
                     />
                     <div className="btn btn-primary">
                         <input type="submit" value="変更"/>
