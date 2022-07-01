@@ -5,7 +5,6 @@ import {deleteUser} from "../redux/slice/user";
 import {deleteToken} from "../redux/slice/auth";
 
 const Header = () => {
-
     //store
     const name = useSelector((state) => state.user_n.name)
     const dispatch = useDispatch();
@@ -35,7 +34,7 @@ const Header = () => {
             )
         } else {
             return (
-                <button className="btn btn-info" onClick={() => navigate('/login')}>Login</button>
+                <button className="btn btn-primary" onClick={() => navigate('/login')}>Login</button>
             )
         }
     }

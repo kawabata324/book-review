@@ -5,6 +5,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setLoading} from "../redux/slice/loading";
 import Loading from "./components/Loading";
 import "../App.css"
+import {isLogin} from "../redux/slice/user";
 
 const Home = () => {
     // このコンポーネントで管理する値
@@ -12,6 +13,7 @@ const Home = () => {
     const [page, setPage] = useState(1)
 
     // store
+    // Todo tokenの呼び出しをいちいちするのを防ぐ
     const token = useSelector((state) => state.auth.token)
     const dispatch = useDispatch()
 
@@ -23,8 +25,6 @@ const Home = () => {
         const {res} = await getBooks(token, currentPage)
         if (res.status === 200) {
             setBooks(res.data)
-        } else {
-            navigate('/login')
         }
         dispatch(setLoading(false))
     }
@@ -37,8 +37,18 @@ const Home = () => {
         }
     }
 
-    const bookList = books.map((book) => {
+    const prevPage = async () => {
+        await fetchBooks(page - 1)
+        await setPage(page - 1)
+    }
 
+    const nextPage = async () => {
+        await fetchBooks(page + 1)
+        await setPage(page + 1)
+    }
+
+
+    const bookList = books.map((book) => {
         // Editに遷移するボタン
         const editButton = (
             <td>
@@ -59,17 +69,10 @@ const Home = () => {
         )
     })
 
-    const prevPage = async () => {
-        await fetchBooks(page - 1)
-        await setPage(page - 1)
-    }
-
-    const nextPage = async () => {
-        await fetchBooks(page + 1)
-        await setPage(page + 1)
-    }
-
     useEffect(() => {
+        if (token === "") {
+            navigate('/login')
+        }
         fetchBooks(page)
     }, [])
 
@@ -98,7 +101,7 @@ const Home = () => {
                     </div>
                 </div>
                 <div className="mt-10 flex justify-end">
-                    <button className="btn btn-accent m-5" onClick={() => navigate('/new')}>新規登録する</button>
+                    <button className="btn btn-primary m-5" onClick={() => navigate('/new')}>新規登録する</button>
                 </div>
             </Loading>
         </div>

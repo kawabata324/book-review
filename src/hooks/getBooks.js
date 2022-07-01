@@ -2,7 +2,7 @@ import {apiClient} from "../lib/apiClient";
 
 
 export const getBooks = async (token, page) => {
-    const offset = page === 1 ? page : page * 10
+    const offset = page === 1 ? 0 : page * 10
 
     try {
         const res = await apiClient.get("/books", {

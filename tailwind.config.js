@@ -10,8 +10,8 @@ module.exports = {
         },
     },
     plugins: [require("daisyui")],
-    // daisyui: {
-    //     themes: ["dracula"]
-    // }
+    daisyui: {
+        themes: ["winter"]
+    }
 }
 

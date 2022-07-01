@@ -5,7 +5,7 @@ function BaseTextarea(props) {
         <div>
             <label className="label text-xl">{label}</label>
             <textarea
-                className="textarea textarea-info h-96 w-96 "
+                className="textarea textarea-primary h-96 w-96 "
                 {...register(label, {required})}
                 defaultValue={defaultValue}
             ></textarea>

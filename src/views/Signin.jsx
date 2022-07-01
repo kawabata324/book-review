@@ -8,6 +8,7 @@ import {setToken} from "../redux/slice/auth";
 import {setUser} from "../redux/slice/user";
 import {login} from "../hooks/login";
 import {getUser} from "../hooks/getUser";
+import AccountForm from "./components/AccountForm";
 
 function SignIn() {
     const {register, formState: {errors}, handleSubmit} = useForm();
@@ -22,51 +23,44 @@ function SignIn() {
     const signInUser = async (data) => {
         setServerError('')
 
-        const {res} = await login(data.email, data.password)
-        if (res.status === 200) {
+        const {res, error} = await login(data.email, data.password)
+
+        if (res !== null) {
             await dispatch(setToken(res.data.token))
 
-            const {resUser} = await getUser(res.data.token)
-            await dispatch(setUser(resUser.data.name))
-            navigate('/')
-        } else {
-            setServerError('サーバーでErrorが発生しました。もう一度お試しください')
+            const {resUser, error} = await getUser(res.data.token)
+            if (resUser !== null) {
+                await dispatch(setUser(resUser.data.name))
+                navigate('/')
+            } else if (error) {
+                const errorMessage = error.response.data.ErrorMessageJP
+                setServerError(errorMessage)
+            }
+        } else if (error) {
+            const errorMessage = error.response.data.ErrorMessageJP
+            setServerError(errorMessage)
         }
     }
 
     useEffect(() => {
-        if(!!name){
+        if (!!name) {
             navigate('/')
         }
     }, [])
 
 
     return (
-        <div>
-            <h1>Sign in</h1>
-            <div className="error-text">{serverError}</div>
-            <div>
-                <form onSubmit={handleSubmit(signInUser)}>
-                    <BaseInput
-                        label="email"
-                        type="email"
-                        register={register}
-                        errors={errors.email}
-                        required
-                    />
-                    <BaseInput
-                        label="password"
-                        type="password"
-                        register={register}
-                        errors={errors.password}
-                        minLength={6}
-                        required
-                    />
-                    <input type="submit" value="SignIn"/>
-                </form>
-            </div>
-            <Link to="/signup">新規登録はこちら</Link>
-        </div>
+        <AccountForm
+            formTitle="Sign in"
+            serverError={serverError}
+            errors={errors}
+            handleSubmit={handleSubmit}
+            submitFunc={signInUser}
+            submitValue={"Sign in"}
+            register={register}
+            linkMessage="新規登録はこちらから"
+            link="/signup"
+        />
     )
 }
 

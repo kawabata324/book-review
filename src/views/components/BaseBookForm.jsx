@@ -2,7 +2,7 @@ import BaseInput from "./BaseInput";
 import BaseTextarea from "./BaseTextarea";
 
 function BaseBookForm(props) {
-    const {formTitle, book, errors, handleSubmit, submitFunc, submitValue, register, deleteFunc, deleteBtn} = props
+    const {formTitle, errors, handleSubmit, submitFunc, submitValue, register, deleteFunc, deleteBtn} = props
 
     const deleteButton = () => {
         return (
@@ -19,7 +19,6 @@ function BaseBookForm(props) {
                     type="text"
                     register={register}
                     errors={errors.title}
-                    defaultValue={book ? book.title : ''}
                     required
                 />
                 <BaseInput
@@ -27,21 +26,18 @@ function BaseBookForm(props) {
                     type="text"
                     register={register}
                     errors={errors.url}
-                    defaultValue={book ? book.url : ''}
                     required
                 />
                 <BaseTextarea
                     label="detail"
                     register={register}
                     errors={errors.detail}
-                    defaultValue={book ? book.detail : ''}
                     required
                 />
                 <BaseTextarea
                     label="review"
                     register={register}
                     errors={errors.review}
-                    defaultValue={book ? book.review : ''}
                     required
                 />
                 <div className="flex flex-row-reverse justify-between w-80">
