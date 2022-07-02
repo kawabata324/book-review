@@ -7,6 +7,7 @@ import Profile from "./views/Profile";
 import BookRegister from "./views/BookRegister";
 import BookDetail from "./views/BookDetail";
 import BookEdit from "./views/BookEdit";
+import Sample from "./views/Sample";
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                     <Route path="/new" element={<BookRegister/>}/>
                     <Route path="/detail/:id" element={<BookDetail/>}/>
                     <Route path="/edit/:id" element={<BookEdit/>}/>
+                    <Route path="/sample" element={<Sample/>}/>
                 </Routes>
             </BrowserRouter>
         </div>
